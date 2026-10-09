@@ -1,4 +1,5 @@
 dist/
+dist-private/
 .netlify/
 node_modules/
 .env*

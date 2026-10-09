@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#5e6320"><title>Entrar · Mi Infancia Saludable</title><link rel="stylesheet" href="login.css"></head>
+<body><main class="account-card"><img src="logo.webp" alt="Mi Infancia Saludable" width="72" height="72"><p class="eyebrow">TU ESPACIO, SIEMPRE A MANO</p><h1>Bienvenida a tu biblioteca</h1><p>Entra con el correo que usaste al comprar tus ebooks.</p>
+<nav aria-label="Acceso"><button type="button" data-mode="login" aria-pressed="true">Iniciar sesión</button><button type="button" data-mode="signup" aria-pressed="false">Crear cuenta</button></nav>
+<form id="account-form"><label>Correo electrónico<input name="email" type="email" autocomplete="email" required></label><label id="password-label">Contraseña<input name="password" type="password" autocomplete="current-password" minlength="10" required></label><label class="remember" id="remember-label"><input name="remember" type="checkbox" checked> Mantener mi sesión iniciada</label><p class="hint" id="signup-note" hidden>Usa al menos 10 caracteres. Te enviaremos un correo para confirmar tu cuenta. El acceso se habilita al verificar tu compra.</p><button class="primary" id="submit" type="submit">Entrar a mi biblioteca</button></form>
+<button class="text-button" id="forgot" type="button">Olvidé mi contraseña</button><p id="account-status" role="status" aria-live="polite"></p><a href="https://www.minfanciasaludable.com/">Volver a nuestra web ↗</a></main>
+<!-- The deployment injects the configured auth client before enabling this page. -->
+</body></html>
