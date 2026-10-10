@@ -1,5 +1,11 @@
 // createClient is supplied by a locally bundled, pinned Supabase SDK.
 // Config contains ONLY the project's public URL and publishable key.
+export function passwordErrorMessage(error) {
+  if(error?.code==='weak_password' || error?.name==='AuthWeakPasswordError' || /weak and easy to guess/i.test(error?.message || ''))
+    return 'Esta contraseña es demasiado común o aparece en filtraciones. Elige una diferente, larga y única. Puedes volver a intentarlo aquí sin pedir otro enlace.';
+  if(error?.code==='same_password') return 'Elige una contraseña diferente de la anterior.';
+  return 'No pudimos cambiar la contraseña. Solicita un nuevo enlace e inténtalo otra vez.';
+}
 export function createPortalAuth(createClient, config, browser = window) {
   const preferenceKey = 'mis:remember-session';
   const sessionKey = 'mis:buyer-session';
@@ -82,8 +88,10 @@ export function bindLogin(portal, document, location, recoveryRequested = false)
         const {data:{session}}=await portal.client.auth.getSession();
         if(!session) throw Error('Este enlace ya no está activo. Vuelve a iniciar sesión y pulsa Olvidé mi contraseña para pedir otro.');
         const {error}=await portal.client.auth.updateUser({password});
-        if(error) throw Error('No pudimos cambiar la contraseña. Solicita un nuevo enlace e inténtalo otra vez.');
-        setMode('login');status.textContent='Tu contraseña se actualizó. Ya puedes entrar.';
+        if(error && error.code!=='same_password') throw Error(passwordErrorMessage(error));
+        setMode('login');
+        status.textContent=error?.code==='same_password'?'Esa ya era tu contraseña actual. Tu acceso está listo.':'Tu contraseña se actualizó. Ya puedes entrar.';
+        if(await portal.buyer()) location.assign('/');
       }else if(mode==='recover'){
         const {error}=await portal.client.auth.resetPasswordForEmail(email,{redirectTo:redirect});
         if(error) throw Error('No pudimos enviar el enlace. Inténtalo nuevamente.');
